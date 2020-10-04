@@ -17,8 +17,4 @@ namespace SportShop.Models
         public int ZipCode { get; set; }
         public bool IsAdmin { get; set; }
     }
-
-    public class CustomerDbContext : SportDbContext
-    {
-    }
 }

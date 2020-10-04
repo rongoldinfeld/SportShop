@@ -11,9 +11,4 @@ namespace SportShop.Models
         public int Price { get; set; }
         public string VideoUrl { get; set; }
     }
-
-    public class ProductDbContext : SportDbContext
-    {
-
-    }
 }

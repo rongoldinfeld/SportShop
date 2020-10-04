@@ -2,6 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    פה צריך להכניס דף בית
+<div style="text-align: center">
+
+    <form method="post" action="Home/Search">
+        <input type="text" size="50" placeholder="Search for product..." name="message">
+        <input type="submit" class="fa fa-search" />
+    </form>
+    
 </div>
