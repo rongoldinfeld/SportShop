@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportShop.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace SabrasSmoothie.Controllers
 {
     public class RegisterController : Controller
     {
-        private CustomerDbContext db = new CustomerDbContext();
+        SportShopContext context = new SportShopContext();
 
         public ActionResult Index()
         {
@@ -30,9 +26,8 @@ namespace SabrasSmoothie.Controllers
             if (ModelState.IsValid)
             {
                 customer.IsAdmin = false;
-
-                db.Customers.Add(customer);
-                db.SaveChanges();
+                context.Customers.Add(customer);
+                context.SaveChanges();
                 return RedirectToAction("Success");
             }
 

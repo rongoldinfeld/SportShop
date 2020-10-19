@@ -2,15 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace SportShop.Controllers
 {
     public class LoginController : Controller
     {
-        private CustomerDbContext _Customer = new CustomerDbContext();
+        SportShopContext context = new SportShopContext();
 
         public ActionResult Index()
         {
@@ -26,7 +28,7 @@ namespace SportShop.Controllers
         [HttpPost]
         public ActionResult Index(string userName, string password)
         {
-            var user = _Customer.Customers.SingleOrDefault(customer => customer.UserName == userName && customer.Password == password);
+            var user = context.Customers.SingleOrDefault(customer => customer.UserName == userName && customer.Password == password);
             if (user == null)
             {
                 ViewBag.Message = "Invalid username or password";
@@ -39,8 +41,8 @@ namespace SportShop.Controllers
             }
             else
             {
-
-                HttpContext.Session.SetString("UserId", "user.Id");
+                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+                HttpContext.Session.SetString("UserFullName", user.FirstName + " " + user.LastName);
             }
 
             return Redirect("/Home/");
