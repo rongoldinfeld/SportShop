@@ -9,6 +9,7 @@ namespace SportShop.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<Store> Stores { get; set; }
 
         public SportShopContext():base("SportShopContext") {}
 

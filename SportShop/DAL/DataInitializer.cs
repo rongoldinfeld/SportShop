@@ -12,6 +12,7 @@ namespace SportShop.Models
             InitialzieCustomers(context);
             InitialzieOrders(context);
             InitialzieOrderProducts(context);
+            InitialzieStores(context);
         }
 
         public static void CleanUp(SportShopContext context)
@@ -26,6 +27,9 @@ namespace SportShop.Models
             context.SaveChanges();
 
             context.OrderProducts.RemoveRange(context.OrderProducts.ToList());
+            context.SaveChanges();
+
+            context.Stores.RemoveRange(context.Stores.ToList());
             context.SaveChanges();
 
             context.Database.Delete();
@@ -181,6 +185,38 @@ namespace SportShop.Models
                         OrderId = 1,
                         ProductId = 2,
                         Quantity = 3
+                    }
+                }
+            );
+            context.SaveChanges();
+        }
+
+
+
+        private static void InitialzieStores(SportShopContext context)
+        {
+            // Look for any Customerss.
+            if (context.Stores.Any())
+            {
+                return; // DB has been seeded
+            }
+
+            context.Stores.AddRange(
+                new List<Store>()
+                {
+                    new Store
+                    {
+                        Id = 1,
+                        Name = "G סניף מתחם",
+                        Lat = 31.984065,
+                        Lng = 34.770841
+                    },
+                    new Store
+                    {
+                        Id = 2,
+                        Name = "סניף קניון עזריאלי",
+                        Lat = 32.074600,
+                        Lng = 34.791315
                     }
                 }
             );

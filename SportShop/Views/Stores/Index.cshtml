@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Stores";
+}
+
+@model List<Store>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-OHU7dHWuQ6_D3tBSfMmAqS4GXhTrPPA&callback=initMap&libraries=&v=weekly"
+        defer></script>
+
+<link rel="stylesheet" href="~/css/Stores.css">
+<script>
+    // Initialize and add the map
+    function initMap() {
+
+        // Getting the stores object from the controller.
+        const stores = @Json.Serialize(Model);
+
+        // The location is in israel
+        const israel = { lat: 32.251208, lng: 34.878222 };
+        // The map, centered at israel
+        const map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 7,
+            center: israel,
+        });
+
+        
+        // Scanning the stores
+        stores.forEach(store => {
+
+            // Creating a marker on a map for each store.
+            const storeLocation = { lat: store.lat, lng: store.lng };
+            const marker = new google.maps.Marker({
+                position: storeLocation,
+                map,
+                title: store.name
+            });
+
+            // Creating an info window for each marker and attaching it to a 'click' event.
+
+            const infowindow = new google.maps.InfoWindow({
+                content: "<span>" + marker.getTitle() + "</span></div>"
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.open(map, marker);
+            });
+        });
+
+        
+    }
+</script>
+
+<h3>:הסניפים שלנו</h3>
+<!--The div element for the map -->
+<div id="map"></div>

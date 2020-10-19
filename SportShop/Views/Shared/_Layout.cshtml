@@ -17,6 +17,7 @@
             <ul class="nav navbar-nav">
                 <li>@Html.ActionLink("Home", "Index", "Home")</li>
                 <li>@Html.ActionLink("About", "Index", "About")</li>
+                <li>@Html.ActionLink("Stores", "Index", "Stores")</li>
             </ul>
             <ul class="nav navbar-nav pull-right">
                 @if (Context.Session.GetString("User") != null)
