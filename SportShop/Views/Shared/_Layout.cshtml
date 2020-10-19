@@ -8,32 +8,49 @@
     <link rel="stylesheet" href="/css/main.css"/>
 </head>
 <body>
-<div class="navbar navbar-fixed-top" >
+<div class="navbar navbar-fixed-top">
     <div class="container h-25">
-        <div class="navbar-header">
-            @Html.ActionLink("Sabras", "Index", "Home", new { area = "" }, new { @class = "brand-logo" })
-        </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "Index", "About")</li>
-                <li>@Html.ActionLink("Stores", "Index", "Stores")</li>
+                @if (Context.Session.GetString("Admin") != null)
+                {
+                    <li>
+                        <a asp-controller="Products" asp-action="Index">Manage Products</a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li>
+                        <a asp-controller="About" asp-action="Index">About</a>
+                    </li>
+                }
             </ul>
             <ul class="nav navbar-nav pull-right">
                 @if (Context.Session.GetString("User") != null)
                 {
                     <li>Welcome, @Context.Session.GetString("UserFullName")</li>
-                    <li class="logout">@Html.ActionLink("Logout", "Logout", "Login")</li>
+                    <li class="logout">
+                        <a asp-action="Logout" asp-controller="Login">Logout</a>
+                    </li>
                 }
                 else if (Context.Session.GetString("Admin") != null)
                 {
                     <li>Welcome, Admin</li>
-                    <li class="logout">@Html.ActionLink("Logout", "Logout", "Login")</li>
+                    <li class="logout">
+                        <a asp-action="Logout" asp-controller="Login">Logout</a>
+                    </li>
                 }
                 else
                 {
-                    <li>@Html.ActionLink("Register", "Index", "Register")</li>
-                    <li>@Html.ActionLink("Login", "Index", "Login")</li>
+                    <li>
+                        <a asp-controller="Register" asp-action="Index">Register</a>
+                    </li>
+                    <li>
+                        <a asp-controller="Login" asp-action="Index">Login</a>
+                    </li>
                 }
             </ul>
 
