@@ -28,7 +28,8 @@
     "inputFiles": [
       "Styles/bootstrap.css",
       "Styles/main.css",
-      "Styles/Stores.css"
+      "Styles/Stores.css",
+      "Styles/Home.css"
     ],
     // Optionally specify minification options
     "minify": {
