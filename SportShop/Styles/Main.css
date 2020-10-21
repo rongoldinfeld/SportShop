@@ -1,3 +1,7 @@
 ﻿.footer {
     color: white
 }
+
+.invalid-login {
+    color: red;
+}

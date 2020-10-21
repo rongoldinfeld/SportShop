@@ -108,25 +108,25 @@ namespace SportShop.Data
                     new Customer
                     {
                         Id = 1,
-                        FirstName = "Admin",
-                        LastName = "Admin",
-                        BirthDate = new DateTime(1995, 11, 14),
+                        FirstName = "Ron",
+                        LastName = "Goldinfeld",
+                        BirthDate = new DateTime(1998, 11, 14),
                         UserName = "admin",
                         Password = "admin",
-                        Address = "admin",
-                        City = "admin",
-                        ZipCode = 1,
+                        Address = "natur",
+                        City = "rishon",
+                        ZipCode = 18437,
                         IsAdmin = true
                     },
                     new Customer
                     {
                         Id = 2,
-                        FirstName = "Ron",
-                        LastName = "Goldinfeld",
-                        BirthDate = new DateTime(1995, 11, 14),
-                        UserName = "ron",
-                        Password = "ronchuk",
-                        Address = "natur 3",
+                        FirstName = "Tomer",
+                        LastName = "Avisar",
+                        BirthDate = new DateTime(1998, 10, 3),
+                        UserName = "tomer",
+                        Password = "avi",
+                        Address = "harav",
                         City = "rishon",
                         ZipCode = 123123,
                         IsAdmin = false

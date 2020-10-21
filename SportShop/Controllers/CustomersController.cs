@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Data.Entity.Migrations;
-using SportShop.Models;
-using SportShop.Data;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SportShop.Data;
+using SportShop.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace SportShop.Controllers
 {
-    public class ProductsController : Controller
+    public class CustomersController : Controller
     {
         private readonly SportShopContext _context = new SportShopContext();
 
-        // GET: Products
-        public ActionResult Index()
+        // GET: Customers
+        public IActionResult Index()
         {
             if (HttpContext.Session.GetString("Admin") != null)
             {
-                return View(_context.Products.ToList());
+                return View(_context.Customers.ToList());
             }
             else
             {
@@ -26,7 +26,7 @@ namespace SportShop.Controllers
             }
         }
 
-        // GET: Products/Details/5
+        // GET: Customers/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -34,41 +34,41 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var product = _context.Products
-                .FirstOrDefault(m => m.Id == id);
-            if (product == null)
+            var customer = _context.Customers.FirstOrDefault(m => m.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // GET: Products/Create
+        // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Description,Price,VideoUrl")]
-            Product product)
+        public IActionResult Create(
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Products.Add(product);
+                _context.Customers.Add(customer);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // GET: Products/Edit/5
+        // GET: Customers/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -76,24 +76,25 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var product = _context.Products.Find(id);
-            if (product == null)
+            var customer = _context.Customers.Find(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // POST: Products/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Description,Price,VideoUrl")]
-            Product product)
+        public IActionResult Edit(int id,
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            Customer customer)
         {
-            if (id != product.Id)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -102,12 +103,12 @@ namespace SportShop.Controllers
             {
                 try
                 {
-                    _context.Products.AddOrUpdate(product);
+                    _context.Customers.AddOrUpdate(customer);
                     _context.SaveChanges();
                 }
                 catch (Exception e)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -120,10 +121,10 @@ namespace SportShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // GET: Products/Delete/5
+        // GET: Customers/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -131,30 +132,38 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var product = _context.Products
+            var customer =  _context.Customers
                 .FirstOrDefault(m => m.Id == id);
-            if (product == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(customer);
         }
 
-        // POST: Products/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var product = _context.Products.Find(id);
-            _context.Products.Remove(product);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            var customer = _context.Customers.Find(id);
+            if (customer != null)
+            {
+                _context.Customers.Remove(customer);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return NotFound();
+            }
+            
         }
 
-        private bool ProductExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Customers.Any(e => e.Id == id);
         }
     }
 }
