@@ -12,6 +12,11 @@ namespace SportShop.Controllers
 
         public ActionResult Index()
         {
+            if (TempData.ContainsKey("AdminErrorMessage"))
+            {
+                ViewBag.Message = TempData["AdminErrorMessage"] as string;
+            }
+
             return View();
         }
 
@@ -24,7 +29,8 @@ namespace SportShop.Controllers
         [HttpPost]
         public ActionResult Index(string userName, string password)
         {
-            var user = context.Customers.SingleOrDefault(customer => customer.UserName == userName && customer.Password == password);
+            var user = context.Customers.SingleOrDefault(customer =>
+                customer.UserName == userName && customer.Password == password);
             if (user == null)
             {
                 ViewBag.Message = "Invalid username or password";
@@ -43,7 +49,6 @@ namespace SportShop.Controllers
                 }
             }
 
-            
 
             return Redirect("/Home/");
         }
