@@ -1,23 +1,4 @@
-.footer {
-    color: white
-}
-
-.invalid-login {
-    color: red;
-}
-/* Set the size of the div element that contains the map */
-#map {
-    height: 400px;
-    /* The height is 400 pixels */
-    width: 100%;
-    /* The width is the width of the web page */
-}
-
-h3 {
-    text-align: right;
-}
-
-.youtube-video {
+﻿.youtube-video {
     margin-top:50px;
 }
 .welcome-title {
