@@ -27,10 +27,8 @@
     "outputFileName": "wwwroot/css/main.css",
     "inputFiles": [
       "Styles/bootstrap.css",
-      "Styles/Main.css",
-      "Styles/About.css",
-      "Styles/Home.css",
-      "Styles/Login.css"
+      "Styles/main.css",
+      "Styles/Stores.css"
     ],
     // Optionally specify minification options
     "minify": {

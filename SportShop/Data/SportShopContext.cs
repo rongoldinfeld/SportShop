@@ -1,7 +1,8 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using SportShop.Models;
 
-namespace SportShop.Models
+namespace SportShop.Data
 {
     public class SportShopContext : DbContext
     {

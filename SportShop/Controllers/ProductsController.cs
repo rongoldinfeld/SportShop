@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity.Migrations;
 using SportShop.Models;
+using SportShop.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

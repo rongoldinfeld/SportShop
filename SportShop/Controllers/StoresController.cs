@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SportShop.Models;
+using SportShop.Data;
 
 namespace SportShop.Controllers
 {

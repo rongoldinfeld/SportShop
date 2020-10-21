@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportShop.Models;
+using SportShop.Data;
 
-namespace SabrasSmoothie.Controllers
+namespace SportShop.Controllers
 {
     public class RegisterController : Controller
     {

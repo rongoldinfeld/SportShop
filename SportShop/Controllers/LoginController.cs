@@ -1,4 +1,4 @@
-﻿using SportShop.Models;
+﻿using SportShop.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +17,7 @@ namespace SportShop.Controllers
 
         public ActionResult Logout()
         {
-            this.HttpContext.Session.Clear();
+            HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
 
@@ -30,16 +30,20 @@ namespace SportShop.Controllers
                 ViewBag.Message = "Invalid username or password";
                 return View();
             }
-            else if (user.IsAdmin)
-            {
-
-                HttpContext.Session.SetString("Admin", "true");
-            }
             else
             {
-                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
                 HttpContext.Session.SetString("UserFullName", user.FirstName + " " + user.LastName);
+                if (user.IsAdmin)
+                {
+                    HttpContext.Session.SetString("Admin", "true");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+                }
             }
+
+            
 
             return Redirect("/Home/");
         }

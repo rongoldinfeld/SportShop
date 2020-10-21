@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
+using SportShop.Models;
 
-namespace SportShop.Models
+namespace SportShop.Data
 {
-    public class DataInitializer: System.Data.Entity.DropCreateDatabaseAlways<SportShopContext>
+    public class DataInitializer: DropCreateDatabaseAlways<SportShopContext>
     {
         protected override void Seed(SportShopContext context)
         {
