@@ -1,0 +1,228 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <style>
+
+        #mostSelling {
+            display: flex;
+            direction: rtl;
+            width: fit-content;
+        }
+
+        #products-legend {
+            display: grid;
+            height: fit-content;
+            width: max-content;
+            font-size: 19px;
+            direction: ltr;
+            display: none;
+        }
+
+        #graphs-container {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+
+
+<h2>Statistics</h2>
+
+<div class="overlay" id="loading-spinner">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+        <div class="row">
+            <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem; z-index: 20;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="row">
+            <strong>Calculating Statistics</strong>
+        </div>
+    </div>
+</div>
+<div id="graphs-container">
+    <div id="sumPurchases"></div>
+    <div id="mostSelling">
+        <table id="products-legend">
+            <tr>
+                <th>id</th>
+                <th>name</th>
+            </tr>
+        </table>
+        <div id="products-legend"></div>
+    </div>
+</div>
+<script src="https://d3js.org/d3.v6.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    var spinner = document.getElementById("loading-spinner");
+
+    var margin = { top: 30, right: 100, bottom: 50, left: 70 },
+        width = 480 - margin.left - margin.right,
+        height = 430 - margin.top - margin.bottom;
+
+    // -----------------------------------------------------------------
+    // ------- creating second graph of SumPurchasesPerMonth -----------
+    // -----------------------------------------------------------------
+
+    var svg1 = d3.select("#sumPurchases").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+
+    var g = svg1.append("g");
+
+    var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+        y = d3.scaleLinear().rangeRound([height, 0]);
+
+    d3.json("/Statistics/SumPurchasesPerMonth").then(data => {
+
+        x.domain(data.map(function(d) { return d.Month; }));
+        y.domain([0, d3.max(data, function(d) { return d.Sum; })]);
+
+        g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        g.append("g")
+            .call(d3.axisLeft(y).tickFormat(function(d) {
+                return "$" + d;
+            }).ticks(10))
+            .append("text")
+            .attr("y", 6)
+            .attr("dy", "0.71em")
+            .attr("text-anchor", "end")
+            .text("value");
+
+        g.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function(d) { return x(d.Month); })
+            .attr("y", function(d) { return y(d.Sum); })
+            .style("fill", "green")
+            .attr("width", x.bandwidth())
+            .attr("height", function(d) { return height - y(d.Sum); });
+
+        svg1.append("text")
+            .attr("x", (width / 2))
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("direction", "rtl")
+            .style("text-decoration", "underline")
+            .text("סכום הרכישות המצטבר לכל חודש");
+
+        svg1.append("text")
+            .attr("transform",
+                "translate(" +
+                (width / 2) +
+                " ," +
+                (height + margin.top + 20) +
+                ")")
+            .style("text-anchor", "middle")
+            .text("חודש");
+
+        svg1.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("סכום מצטבר");
+
+        spinner.style.display = 'none';
+    });
+
+    // ---------------------------------------------------------------
+    // ------- creating second graph of MostSellingProduct -----------
+    // ---------------------------------------------------------------
+
+    var svg2 = d3.select("#mostSelling").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+    var radius = Math.min(width, height) / 2;
+    var g2 = svg2.append("g").attr("transform", "translate(" + width / 2 + "," + height / 1.7 + ")");
+
+    var color = d3.scaleOrdinal(['#4daf4a', '#377eb8', '#ff7f00', '#984ea3', '#e41a1c']);
+
+    // Generate the pie
+    var pie = d3.pie().value(function(d) {
+        return d.Quantity;
+    });
+
+    var path = d3.arc()
+        .padAngle(.02)
+        .padRadius(100)
+        .cornerRadius(4)
+        .outerRadius(radius)
+        .innerRadius(100);
+
+    var label = d3.arc()
+        .padAngle(.02)
+        .padRadius(100)
+        .cornerRadius(4)
+        .outerRadius(radius - 55)
+        .innerRadius(radius);
+
+    d3.json("/Statistics/MostSellingProduct").then(data => {
+
+        // fetch product names
+        jQuery.ajax({
+            type: "GET",
+            url: "/Statistics/ProductIdAndName",
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: response => {
+                var descriptionContainer = document.getElementById('products-legend');
+                response.filter(productDescription => data.findIndex(e => e.ProductId === productDescription.id) >=
+                    0).forEach(productDescription => {
+
+                    var tableRow = document.createElement('tr');
+                    tableRow.style.color = color(productDescription.id);
+                    var idCell = document.createElement('td');
+                    var nameCell = document.createElement('td');
+                    idCell.innerText = productDescription.id;
+                    nameCell.innerText = productDescription.name;
+                    tableRow.append(idCell, nameCell);
+                    descriptionContainer.append(tableRow);
+                    });
+
+                descriptionContainer.style.display = 'grid';
+            }
+        });
+
+
+        var arcs = g2.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        arcs.append("path")
+            .attr("d", path)
+            .attr("fill", function(d) { return color(d.data.ProductId); });
+
+        arcs.append("text")
+            .attr("transform",
+                function(d) {
+                    return "translate(" + label.centroid(d) + ")";
+                })
+            .text(function(d) { return d.data.ProductId; });
+
+        svg2.append("g")
+            .attr("transform", "translate(" + (width / 2) + "," + 20 + ")")
+            .append("text")
+            .text("המוצר הכי נמכר")
+            .attr("text-anchor", "middle")
+            .style("font-size", "16px")
+            .style("direction", "rtl")
+            .style("text-decoration", "underline");
+    });
+
+
+</script>

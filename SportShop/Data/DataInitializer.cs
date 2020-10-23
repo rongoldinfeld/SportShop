@@ -158,7 +158,19 @@ namespace SportShop.Data
                     {
                         Id = 2,
                         CustomerId = 2,
-                        CreationDate = new DateTime(2018, 1, 1)
+                        CreationDate = new DateTime(2018, 2, 1)
+                    },
+                    new Order
+                    {
+                        Id = 3,
+                        CustomerId = 2,
+                        CreationDate = new DateTime(2018, 4, 2)
+                    },
+                    new Order
+                    {
+                        Id = 4,
+                        CustomerId = 2,
+                        CreationDate = new DateTime(2020, 10, 23)
                     }
                 }
             );
@@ -184,10 +196,28 @@ namespace SportShop.Data
                     },
                     new OrderProduct
                     {
-                        OrderId = 1,
+                        OrderId = 2,
                         ProductId = 2,
                         Quantity = 3
-                    }
+                    },
+                    new OrderProduct
+                    {
+                        OrderId = 3,
+                        ProductId = 5,
+                        Quantity = 2
+                    },
+                    new OrderProduct
+                    {
+                        OrderId = 4,
+                        ProductId = 4,
+                        Quantity = 6
+                    },
+                    new OrderProduct
+                    {
+                        OrderId = 4,
+                        ProductId = 1,
+                        Quantity = 10
+                    },
                 }
             );
             context.SaveChanges();
