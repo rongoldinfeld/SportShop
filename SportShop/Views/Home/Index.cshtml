@@ -18,4 +18,35 @@
         Visit our <a href="https://www.facebook.com/Sport-Shop-111543207406214"  target="_blank">facebook</a> page
     </div>
     <div class="fb-share-button share" data-href="https://www.facebook.com/Sport-Shop-111543207406214" data-layout="button" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.facebook.com%2FSport-Shop-111543207406214&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">שתף</a></div>
+    <h1 class="display-4">Our Products</h1>
+    @*<div class="products-catalog container-fluid">
+            @foreach (var product in ViewBag.Products)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src=@($"~/images/{product.Image}") alt="@product.Name" asp-append-version="true">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            }
+        </div>*@
+    <div class="container">
+        <div class="row">
+            @foreach (var product in ViewBag.Products)
+            {
+            <div class="col-4">
+                <div class="card mb-4" style="width: 18rem;">
+                    <img class="card-img-top" src=@($"~/images/{product.Image}") alt="@product.Name" asp-append-version="true">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
 </div>

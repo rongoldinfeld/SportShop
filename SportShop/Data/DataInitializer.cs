@@ -55,14 +55,16 @@ namespace SportShop.Data
                         Name = "First Product",
                         Description = "Super fancy",
                         VideoUrl = "www.youtube.com/video-to-be-added-here",
+                        Image = "ultraboost-shoes.jpeg",
                         Price = 23,
                     },
                     new Product
                     {
                         Id = 2,
-                        Name = "Second Product",
+                        Name = "Adidas ULTRABOOST",
                         Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
+                        VideoUrl = "https://www.youtube.com/watch?v=IiPQXipUhvc",
+                        Image = "ultraboost-shoes.jpeg",
                         Price = 23,
                     },
                     new Product
@@ -71,6 +73,7 @@ namespace SportShop.Data
                         Name = "Third Product",
                         Description = "Super fancy",
                         VideoUrl = "www.youtube.com/video-to-be-added-here",
+                        Image = "ultraboost-shoes.jpeg",
                         Price = 23,
                     },
                     new Product
@@ -79,6 +82,7 @@ namespace SportShop.Data
                         Name = "Fourth Product",
                         Description = "Super fancy",
                         VideoUrl = "www.youtube.com/video-to-be-added-here",
+                        Image = "ultraboost-shoes.jpeg",
                         Price = 23,
                     },
                     new Product
@@ -87,6 +91,7 @@ namespace SportShop.Data
                         Name = "Fifth Product",
                         Description = "Super fancy",
                         VideoUrl = "www.youtube.com/video-to-be-added-here",
+                        Image = "ultraboost-shoes.jpeg",
                         Price = 23,
                     },
                 }
