@@ -52,42 +52,38 @@ namespace SportShop.Data
                     new Product
                     {
                         Id = 1,
-                        Name = "First Product",
+                        Name = "4 Kg Weights",
                         Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
-                        Price = 23,
+                        VideoUrl = "https://www.youtube.com/watch?v=ln1PtuewNRA",
+                        ImageName = "4-kg-weightsjpg.jpg",
+                        Price = 60,
                     },
                     new Product
                     {
                         Id = 2,
-                        Name = "Second Product",
+                        Name = "Basketball",
                         Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
-                        Price = 23,
+                        VideoUrl = "https://www.youtube.com/watch?v=WUHjBWmVRb0",
+                        ImageName = "basketball.jpg",
+                        Price = 50,
                     },
                     new Product
                     {
                         Id = 3,
-                        Name = "Third Product",
+                        Name = "Dri Fit Shirt",
                         Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
-                        Price = 23,
+                        VideoUrl = "https://www.youtube.com/watch?v=dfPWKL1qazs",
+                        ImageName = "dryfit-shirt.jpg",
+                        Price = 79,
                     },
                     new Product
                     {
                         Id = 4,
-                        Name = "Fourth Product",
+                        Name = "Running Pants",
                         Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
-                        Price = 23,
-                    },
-                    new Product
-                    {
-                        Id = 5,
-                        Name = "Fifth Product",
-                        Description = "Super fancy",
-                        VideoUrl = "www.youtube.com/video-to-be-added-here",
-                        Price = 23,
+                        VideoUrl = "https://www.youtube.com/watch?v=RRXhyQ8u42g",
+                        ImageName = "running-pants.jpg",
+                        Price = 99,
                     },
                 }
             );
@@ -199,12 +195,6 @@ namespace SportShop.Data
                         OrderId = 2,
                         ProductId = 2,
                         Quantity = 3
-                    },
-                    new OrderProduct
-                    {
-                        OrderId = 3,
-                        ProductId = 5,
-                        Quantity = 2
                     },
                     new OrderProduct
                     {

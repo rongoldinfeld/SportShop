@@ -10,8 +10,6 @@ namespace SportShop.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly SportShopContext _context = new SportShopContext();
-
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,8 +18,6 @@ namespace SportShop.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Products = _context.Products.ToList();
-
             return View();
         }
 
