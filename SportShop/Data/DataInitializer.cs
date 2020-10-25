@@ -85,6 +85,14 @@ namespace SportShop.Data
                         ImageName = "running-pants.jpg",
                         Price = 99,
                     },
+                    new Product{
+                        Id = 5,
+                        Name = "Gym Shirt",
+                        Description = "Super fancy",
+                        VideoUrl = "https://www.youtube.com/watch?v=dfPWKL1qazs",
+                        ImageName = "gym-shirt.jpg",
+                        Price = 39,
+                    },
                 }
             );
             context.SaveChanges();
