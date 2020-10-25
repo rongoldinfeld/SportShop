@@ -1,0 +1,41 @@
+﻿@model SportShop.Models.Order
+
+@{
+    ViewData["Title"] = "OrderView";
+}
+
+<h1 class="display-4">Our Products</h1>
+<div class="container catalog">
+    <form asp-action="Create">
+        <div class="row">
+            @foreach (var product in ViewBag.Products)
+            {
+                <div class="col-4">
+                    <div class="card mb-4" style="width: 18rem;">
+                        <img class="card-img-top" src=@($"~/images/{product.ImageName}") alt="@product.Name" asp-append-version="true">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Description.</p>
+                            <p class="card-text">@(product.Price) NIS</p>
+                        </div>
+                        <footer class="row">
+                            <a class="btn btn-link product-video" href="@(product.VideoUrl)">
+                                <i class="fab fa-youtube fa-2x"></i>
+                            </a>
+                            @if (Context.Session.GetString("User") != null || Context.Session.GetString("Admin") != null)
+                            {
+                        <div class="form-group">
+                            <input class="col-2 form-control" type="number" min="0" max="5" value="Model.ProductsAmounts[product.id]" />
+                        </div>
+                            }
+                        </footer>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
