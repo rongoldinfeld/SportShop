@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - SportShop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/main.css" />
-    <link rel="stylesheet" href="~/css/stores.css" />
-    <link rel="stylesheet" href="~/css/catalog.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/main.css"/>
+    <link rel="stylesheet" href="~/css/stores.css"/>
+    <link rel="stylesheet" href="~/css/catalog.css"/>
 </head>
 <body>
 <header>
@@ -39,9 +39,15 @@
                     </li>
                 }
             </ul>
-            <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Catalog"  method="get">
+            <div id="weather-container">
+                <spin class="nav-link" id="current-weather"></spin>
+                
+            </div>
+            <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Catalog" method="get">
                 <input class="form-control mr-sm-2" type="search" name="catalogSearch" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
             </form>
 
             <ul class="navbar-nav">
@@ -84,6 +90,44 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/lib//font-awesome/js/all.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript">
+    var currentWeather = document.getElementById("current-weather");
+    var currentWeatherContainer = document.getElementById("weather-container");
+
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://community-open-weather-map.p.rapidapi.com/weather?lat=31.9730&lon=34.7925&units=metric",
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
+            "x-rapidapi-key": "cbbecd8dc3msh750518bb4b5bfe9p1915a6jsnf3814e327ab2"
+        }
+    }
+
+
+    jQuery.ajax(settings).done(function(response) {
+        var temperature = response.main.temp;
+        var feelsLike = response.main.feels_like;
+        currentWeather.innerText = "טמפרטורה נוכחית: " + temperature + '°';
+
+        var icon = document.createElement('i');
+        if (temperature > 25) {
+            icon.setAttribute("class", "fas fa-sun fa-2x tooltip");
+            icon.style.color = "#ff8100";
+        } else if (temperature >= 18 && temperature <= 25) {
+            icon.setAttribute("class", "fas fa-cloud fa-2x tooltip");
+            icon.style.color = "#00a1ff";
+        } else if (temperature < 18) {
+            icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x tooltip");
+            icon.style.color = "#2ae1ff";
+        }
+        var tooltipText = document.createElement("span");
+        tooltipText.innerText = "מרגיש כמו " + temperature + '°';
+        currentWeatherContainer.append(icon);
+    });
+    
+</script>
 @RenderSection("Scripts", required: false)
 </body>
 </html>
