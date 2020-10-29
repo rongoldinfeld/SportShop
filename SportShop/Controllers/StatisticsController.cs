@@ -38,7 +38,7 @@ namespace SportShop.Controllers
         // GET: Statistics/MostSellingProduct
         public string MostSellingProduct()
         {
-            var groupBy = context.OrderProducts.GroupBy(x => x.Product.Id)
+            var groupBy = context.OrderProducts.GroupBy(orderProduct => orderProduct.Product.Id)
                 .Select(x => new {ProductId = x.Key, Quantity = x.Sum(a => a.Quantity)})
                 .OrderByDescending(x => x.Quantity)
                 .ToList();

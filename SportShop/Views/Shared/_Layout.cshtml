@@ -41,7 +41,6 @@
             </ul>
             <div id="weather-container">
                 <spin class="nav-link" id="current-weather"></spin>
-                
             </div>
             <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Catalog" method="get">
                 <input class="form-control mr-sm-2" type="search" name="catalogSearch" placeholder="Search" aria-label="Search">
@@ -91,10 +90,8 @@
 <script src="~/lib//font-awesome/js/all.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
-    var currentWeather = document.getElementById("current-weather");
-    var currentWeatherContainer = document.getElementById("weather-container");
 
-    var settings = {
+    var weatherQueryOptions = {
         "async": true,
         "crossDomain": true,
         "url": "https://community-open-weather-map.p.rapidapi.com/weather?lat=31.9730&lon=34.7925&units=metric",
@@ -105,25 +102,24 @@
         }
     }
 
+    var currentWeather = document.getElementById("current-weather");
+    var currentWeatherContainer = document.getElementById("weather-container");
 
-    jQuery.ajax(settings).done(function(response) {
+    jQuery.ajax(weatherQueryOptions).done(function(response) {
         var temperature = response.main.temp;
-        var feelsLike = response.main.feels_like;
         currentWeather.innerText = "טמפרטורה נוכחית: " + temperature + '°';
 
         var icon = document.createElement('i');
         if (temperature > 25) {
-            icon.setAttribute("class", "fas fa-sun fa-2x tooltip");
+            icon.setAttribute("class", "fas fa-sun fa-2x");
             icon.style.color = "#ff8100";
         } else if (temperature >= 18 && temperature <= 25) {
-            icon.setAttribute("class", "fas fa-cloud fa-2x tooltip");
+            icon.setAttribute("class", "fas fa-cloud fa-2x");
             icon.style.color = "#00a1ff";
         } else if (temperature < 18) {
-            icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x tooltip");
+            icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x");
             icon.style.color = "#2ae1ff";
         }
-        var tooltipText = document.createElement("span");
-        tooltipText.innerText = "מרגיש כמו " + temperature + '°';
         currentWeatherContainer.append(icon);
     });
     
