@@ -1,4 +1,4 @@
-﻿@model SportShop.Models.Product
+﻿@model SportShop.Models.Store
 
 @{
     ViewData["Title"] = "Details";
@@ -17,22 +17,16 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Lat)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Lat)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Lng)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.VideoUrl)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.VideoUrl)
+            @Html.DisplayFor(model => model.Lng)
         </dd>
     </dl>
 </div>
