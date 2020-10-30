@@ -1,9 +1,9 @@
-﻿using System;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportShop.Data;
 using SportShop.Models;
+using System;
+using System.Data.Entity.Migrations;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace SportShop.Controllers
@@ -13,11 +13,31 @@ namespace SportShop.Controllers
         private readonly SportShopContext _context = new SportShopContext();
 
         // GET: Customers
-        public IActionResult Index()
+        public IActionResult Index(string searchString, string userName, bool? isAdmin)
         {
             if (HttpContext.Session.GetString("Admin") != null)
             {
-                return View(_context.Customers.ToList());
+                var customers = from s in _context.Customers select s;
+
+
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    customers = customers.Where(s => s.LastName.Contains(searchString)
+                                                     || s.FirstName.Contains(searchString));
+                }
+
+                if (isAdmin != null)
+                {
+                    customers = customers.Where(c => c.IsAdmin == isAdmin);
+                }
+
+                if (!String.IsNullOrEmpty(userName))
+                {
+                    customers = customers.Where(c => c.UserName.Contains(userName));
+                }
+
+
+                return View(customers.ToList());
             }
             else
             {
@@ -132,7 +152,7 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var customer =  _context.Customers
+            var customer = _context.Customers
                 .FirstOrDefault(m => m.Id == id);
             if (customer == null)
             {
@@ -158,12 +178,27 @@ namespace SportShop.Controllers
             {
                 return NotFound();
             }
-            
         }
 
         private bool CustomerExists(int id)
         {
             return _context.Customers.Any(e => e.Id == id);
+        }
+
+
+        // GET: Customers/Filter
+        public IActionResult Filter(
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            Customer customer)
+        {
+            // var customers = _context.Customers;
+            //
+            // if (!String.IsNullOrEmpty(firstName))
+            // {
+            //     return View(customers.Where(c => c.FirstName.Contains(firstName)).ToList());
+            // }
+
+            return View(_context.Customers.ToList());
         }
     }
 }

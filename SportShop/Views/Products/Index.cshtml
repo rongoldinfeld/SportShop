@@ -9,26 +9,51 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<section id="filters">
+    @using (Html.BeginForm())
+    {
+        <span>
+            <label for="name" class="control-label">Product name</label>
+            @Html.TextBox("name", null, new {@class = "form-control"})
+
+        </span>
+        <span>
+            <label for="description" class="control-label">Description</label>
+            @Html.TextBox("description", null, new {@class = "form-control"})
+        </span>
+        <div id="price-range">
+            <span>
+                <label for="above" class="control-label">price</label>
+                from @Html.TextBox("above", null, new {@class = "form-control", @type = "number", @min="0"})
+                to @Html.TextBox("below", null, new {@class = "form-control", @type = "number", @min = "0" })
+            </span>
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+    }
+</section>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VideoUrl)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -40,7 +65,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VideoUrl)
+                <a href="@Html.DisplayFor(modelItem => item.VideoUrl)">@Html.DisplayFor(modelItem => item.VideoUrl)</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -48,6 +73,6 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
