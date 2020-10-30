@@ -27,19 +27,47 @@ namespace SportShop.Controllers
         // GET: Statistics/SumPurchasesPerMonth
         public string SumPurchasesPerMonth()
         {
-            var groupBy = context.OrderProducts.GroupBy(order => order.Order.CreationDate.Month).Select(g => new
+            var groupBy = context.OrderProducts.Join(context.Orders,
+                op => op.OrderId,
+                o => o.Id,
+                (orderProducts, order) => new
+                {
+                    month = order.CreationDate.Month, quantity = orderProducts.Quantity,
+                    productId = orderProducts.ProductId
+                }
+            ).Join(context.Products,
+                arg => arg.productId,
+                product => product.Id,
+                (orders, products) => new
+                {
+                    month = orders.month,
+                    quantity = orders.quantity,
+                    price = products.Price
+                }
+            ).GroupBy(g => g.month).Select(g => new
             {
                 Month = g.Key,
-                Sum = g.Sum(c => c.Quantity * c.Product.Price)
+                Sum = g.Sum(c => c.quantity * c.price)
             });
+            ;
+
             return JsonConvert.SerializeObject(groupBy.ToList());
         }
 
         // GET: Statistics/MostSellingProduct
         public string MostSellingProduct()
         {
-            var groupBy = context.OrderProducts.GroupBy(x => x.Product.Id)
-                .Select(x => new {ProductId = x.Key, Quantity = x.Sum(a => a.Quantity)})
+            var groupBy = context.OrderProducts.Join(
+                    context.Products,
+                    orderProduct => orderProduct.ProductId,
+                    product => product.Id,
+                    (orderProduct, product) => new
+                    {
+                        productId = product.Id,
+                        amount = orderProduct.Quantity
+                    }
+                ).GroupBy(orderProduct => orderProduct.productId)
+                .Select(x => new {ProductId = x.Key, Quantity = x.Sum(a => a.amount)})
                 .OrderByDescending(x => x.Quantity)
                 .ToList();
             return JsonConvert.SerializeObject(groupBy.ToList());

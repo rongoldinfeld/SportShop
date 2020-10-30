@@ -1,11 +1,25 @@
-.footer {
-    color: white
+@font-face {
+    font-family: 'Rubik-Light';
+    src: url("Rubik-Light.ttf");
 }
 
-.invalid-login {
-    color: red;
+* {
+    font-family: 'Rubik-Light';
 }
+
+#logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.footer { color: white }
+
+.invalid-login { color: red; }
+
 /* Set the size of the div element that contains the map */
+
 #map {
     height: 400px;
     /* The height is 400 pixels */
@@ -13,16 +27,17 @@
     /* The width is the width of the web page */
 }
 
-h3 {
-    text-align: right;
+h3 { text-align: right; }
+
+.youtube-video { margin-top: 50px; }
+
+.welcome-title {
+    margin-top: 50px;
+    text-shadow: 0 4px 3px rgba(0, 0, 0, 0.4), 0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.youtube-video {
-    margin-top:50px;
-}
-.welcome-title {
-    margin-top:50px;
-}
+.welcome-title:hover { transform: scale(1.3); }
 
 .button {
     -webkit-appearance: button;
@@ -42,9 +57,42 @@ h3 {
     transition-duration: 0.4s;
 }
 
-    .button:hover {
-        text-decoration: none;
-        color:white;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    }
+.button:hover {
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
 
+#weather-container {
+    display: flex;
+    align-items: center;
+    direction: rtl;
+    margin-right: 3%;
+}
+
+#current-weather { color: white; }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+
+.tooltip:hover .tooltiptext { visibility: visible; }

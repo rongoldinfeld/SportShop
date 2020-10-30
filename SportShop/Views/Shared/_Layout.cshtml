@@ -1,20 +1,22 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - SportShop</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/main.css" />
-    <link rel="stylesheet" href="~/css/stores.css" />
-    <link rel="stylesheet" href="~/css/catalog.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/main.css"/>
+    <link rel="stylesheet" href="~/css/stores.css"/>
+    <link rel="stylesheet" href="~/css/catalog.css"/>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SportShop</a>
+        <a asp-controller="Home" asp-action="Index">
+            <canvas id="canvas"></canvas>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,9 +44,14 @@
                     </li>
                 }
             </ul>
-            <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Catalog"  method="get">
+            <div id="weather-container">
+                <spin class="nav-link" id="current-weather"></spin>
+            </div>
+            <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Catalog" method="get">
                 <input class="form-control mr-sm-2" type="search" name="catalogSearch" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
             </form>
 
             <ul class="navbar-nav">
@@ -87,6 +94,97 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/lib//font-awesome/js/all.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript">
+
+    var weatherQueryOptions = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://community-open-weather-map.p.rapidapi.com/weather?lat=31.9730&lon=34.7925&units=metric",
+        "method": "GET",
+        "headers": {
+            "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com",
+            "x-rapidapi-key": "cbbecd8dc3msh750518bb4b5bfe9p1915a6jsnf3814e327ab2"
+        }
+    }
+
+    var currentWeather = document.getElementById("current-weather");
+    var currentWeatherContainer = document.getElementById("weather-container");
+
+    jQuery.ajax(weatherQueryOptions).done(function(response) {
+        var temperature = response.main.temp;
+        currentWeather.innerText = "טמפרטורה נוכחית: " + temperature + '°';
+
+        var icon = document.createElement('i');
+        if (temperature > 25) {
+            icon.setAttribute("class", "fas fa-sun fa-2x");
+            icon.style.color = "#ff8100";
+        } else if (temperature >= 18 && temperature <= 25) {
+            icon.setAttribute("class", "fas fa-cloud fa-2x");
+            icon.style.color = "#00a1ff";
+        } else if (temperature < 18) {
+            icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x");
+            icon.style.color = "#2ae1ff";
+        }
+        currentWeatherContainer.append(icon);
+    });
+
+</script>
+<script type="text/javascript">
+    var data = '\
+  <svg xmlns="http://www.w3.org/2000/svg" height="300" width="300">\
+    <foreignObject width="100%" height="100%">\
+      <div xmlns="http://www.w3.org/1999/xhtml">\
+        <div style="position: absolute;\
+                    margin: 0.2em;\
+                    font-family: Tahoma;\
+                    font-size: 115px;\
+                    font-weight: bold;\
+                    transform: rotate(345deg);\
+                    color: #6CF;\
+                    background-color: #036;\
+                    text-align: center;\
+                    border-radius: 2em;\
+                    height: 2em;\
+                    line-height: 2em;\
+                    display: inline-block;\
+                    width: 2em;\
+                    padding: 0.1em;\
+                    box-shadow:\
+                      inset 0 0 1em #000,\
+                      0 0 0.05em 0.1em #FFF,\
+                      0 0 0.1em 0.1em #000;\
+        ">SP</div>\
+      </div>\
+    </foreignObject>\
+  </svg>';
+
+
+// Define an image and set the source of the image to the SVG
+    var img = new Image();
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
+    var canvas = document.getElementById('canvas');
+    var strPNG;
+
+// Define an image
+    var img = new Image();
+
+// Once the image loads draw it onto a new canvas
+    img.onload = function() {
+        // Create a canvas
+        canvas.style.height = '65px';
+        canvas.height = 300;
+        canvas.width = 300;
+
+        // Draw the image onto the canvas
+        canvas.getContext('2d').drawImage(img, 0, 0);
+
+        // Store the image's data URI in a variable for later
+        strPNG = canvas.toDataURL();
+    };
+
+// Set the source of the image to the SVG data
+    img.src = 'data:image/svg+xml;base64,' + window.btoa(data);
+</script>
 @RenderSection("Scripts", required: false)
 </body>
 </html>
