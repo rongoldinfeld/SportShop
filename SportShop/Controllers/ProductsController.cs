@@ -13,11 +13,33 @@ namespace SportShop.Controllers
         private readonly SportShopContext _context = new SportShopContext();
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(string? name, string? description, int? above, int? below)
         {
             if (HttpContext.Session.GetString("Admin") != null)
             {
-                return View(_context.Products.ToList());
+                var products = from m in _context.Products select m;
+
+                if (!String.IsNullOrEmpty(name))
+                {
+                    products = products.Where(p => p.Name.Contains(name));
+                }
+
+                if (!String.IsNullOrEmpty(description))
+                {
+                    products = products.Where(p => p.Description.Contains(description));
+                }
+
+                if (above != null)
+                {
+                    products = products.Where(p => p.Price >= above);
+                }
+
+                if (below != null)
+                {
+                    products = products.Where(p => p.Price <= below);
+                }
+
+                return View(products.ToList());
             }
             else
             {
