@@ -5,6 +5,9 @@ using SportShop.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.IO;
+using System.Reflection.Metadata;
 
 namespace SportShop.Controllers
 {
@@ -78,16 +81,35 @@ namespace SportShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,Name,Description,Price,VideoUrl")]
-            Product product)
+            Product product, bool isFacebookShare = false)
         {
             if (ModelState.IsValid)
             {
                 _context.Products.Add(product);
                 _context.SaveChanges();
+                PostProductOnFacebook(product);
                 return RedirectToAction(nameof(Index));
             }
 
             return View(product);
+        }
+
+        public static WebResponse PostProductOnFacebook(Product product)
+        {
+            //Data parameter Example
+            string data = "";
+            string message = $"A new product:  \"{product.Name}\" is now available in our stores for only {product.Price} !!! \n SHOP NOW at sport shop the best prices in the whole universe.";
+            string url = $"https://graph.facebook.com/111543207406214/feed?message={message}&access_token=EAAL1cBr10TQBAAmOEAryA5XmEcmC9Vg5foA8lvJBf3QAlytz00rRpKgx7ZBhpvaTgJZACziMNTAKF5mx7ZAGh0XG7DIky2uhA6uCF4ZA2goXvhkqYEkGvUot6E0rZBpUXPy1eUyAlqpwxpIqTSw8zTb6ih0WmA6m3V1x9wutZASwZDZD";
+            WebRequest httpRequest = WebRequest.Create(url);
+            httpRequest.Method = "POST";
+            httpRequest.ContentType = "application/x-www-form-urlencoded";
+            httpRequest.ContentLength = data.Length;
+
+            var streamWriter = new StreamWriter(httpRequest.GetRequestStream());
+            streamWriter.Write(data);
+            streamWriter.Close();
+
+            return httpRequest.GetResponse();
         }
 
         // GET: Products/Edit/5
