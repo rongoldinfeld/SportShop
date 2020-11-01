@@ -1,0 +1,176 @@
+﻿@model SportShop.Models.Order
+
+@{
+    ViewData["Title"] = "CatalogView";
+}
+
+@using System.Linq;
+<h1 class="display-4">Our Products</h1>
+<div class="container catalog">
+    <div class="row">
+        @foreach (var product in ViewBag.Products)
+        {
+            <div class="col-4">
+                <div class="card mb-4" style="width: 18rem;">
+                    <img class="card-img-top" src=@($"~/images/{product.ImageName}") alt="@product.Name" asp-append-version="true">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description.</p>
+                        <p class="card-text">@(product.Price) NIS</p>
+                    </div>
+                    <footer class="row align-items-center">
+                        <a class="btn btn-link product-video" href="@(product.VideoUrl)">
+                            <i class="fab fa-youtube fa-2x"></i>
+                        </a>
+                        <input id="@product.Id" class="col-2 product-amount form-control" type="number" min="0" max="5" value="0" />
+                    </footer>
+                </div>
+            </div>
+        }
+    </div>
+    @if (Context.Session.GetString("User") != null || Context.Session.GetString("Admin") != null)
+    {
+        <button id="shopping-cart" type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#shoppingCartModal">
+            <i class="fas fa-shopping-cart fa-1x"></i>
+        </button>
+    }
+        <div class="modal fade" id="shoppingCartModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Shopping Bag</h5>
+                        <button id="close-cart-btn" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Quantity
+                                    </th>
+                                    <th>
+                                        Price
+                                    </th>
+                                    <th>
+                                        Remove
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="shopping-cart-products">
+                            </tbody>
+                        </table>
+                        <div id="total-price">
+                            <span>Total: </span>
+                        </div>
+                        <div id="save-message"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="save-order" type="button" class="btn btn-success">Send Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    var order = [];
+
+    const getOrderProducts = () => {
+        const productsInOrder = [];
+        const getProduct = id => productsInOrder.find(({ productId }) => productId === id);
+
+        $(".product-amount").each(function (index, element) {
+            const productId = parseInt(element.id);
+            const quantity = parseInt(element.value);
+
+            if (quantity === 0) {
+                return;
+            }
+
+            if (getProduct(productId)) {
+                getProduct(productId).quantity = quantity;
+            } else {
+                productsInOrder.push({
+                    productId,
+                    quantity
+                })
+            }
+        });
+
+        return productsInOrder;
+    };
+
+    $("#shopping-cart").click(function () {
+        order = getOrderProducts();
+        var products = [];
+
+        jQuery.ajax({
+            type: "GET",
+            url: "/Order/Products",
+            dataType: "json",
+            traditional: true,
+            data: {
+                productsIds: order.map(({ productId }) => productId)
+            },
+            success: response => {
+                products = response;
+                var totalPrice = 0;
+
+                const productsTable = $("#shopping-cart-products");
+                productsTable.empty();
+
+                order.forEach(x => {
+                    const productRow = $("<tr></tr>");
+                    productsTable.append(productRow);
+
+                    const currentProduct = products.find(({ id }) => id === x.productId);
+                    productRow.append(`<td>${currentProduct.name}</td>`);
+                    productRow.append(`<td>${x.quantity}</td>`);
+                    productRow.append(`<td>${currentProduct.price * x.quantity} NIS</td>`);
+
+                    const removeButton = $("<button type='button' class='btn btn-link'>Remove</button>");
+                    removeButton.click(function () {
+                        order = order.filter(({ productId }) => productId !== currentProduct.id);
+                        productRow.remove();
+                    });
+
+                    productRow.append("<td></td>").append(removeButton);
+                    totalPrice += currentProduct.price * x.quantity;
+                });
+
+                $("#total-price").append(`<span>${totalPrice} NIS</span>`);
+            }
+        });
+    });
+
+    const onSaveSuccess = () => {
+        $("#save-message").append("<b>Order Sent!</b>");
+        setTimeout(() => $("#close-cart-btn").click(), 2000);
+    }
+
+    $("#save-order").click(function () {
+        $.ajax({
+            url: '/Order/Create',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                OrderProducts: order
+            },
+            success: response => {
+                onSaveSuccess();
+            },
+            error: function (request, status, error) {
+                if (request.status === 200) {
+                    onSaveSuccess();
+                } else {
+                    $("#save-message").append("<b>Order Failed!</b>");
+                }
+            }
+        });
+    });
+</script>

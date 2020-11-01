@@ -17,5 +17,10 @@ namespace SportShop.Models
         public Customer Customer { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; }
+
+        public Order()
+        {
+            OrderProducts = new List<OrderProduct>();
+        }
     }
 }
