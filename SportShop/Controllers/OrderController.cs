@@ -15,14 +15,28 @@ namespace SportShop.Controllers
         
         private readonly SportShopContext _context = new SportShopContext();
 
-        public  IActionResult Index(string catalogSearch)
+        public  IActionResult Index(string name, string? description, int? above, int? below)
         {
-            var products = from m in _context.Products
-                         select m;
+            var products = from m in _context.Products select m;
 
-            if (!string.IsNullOrEmpty(catalogSearch))
+            if (!string.IsNullOrEmpty(name))
             {
-                products = products.Where(product => product.Name.Contains(catalogSearch));
+                products = products.Where(product => product.Name.Contains(name));
+            }
+
+            if (!string.IsNullOrEmpty(description))
+            {
+                products = products.Where(p => p.Description.Contains(description));
+            }
+
+            if (above != null)
+            {
+                products = products.Where(p => p.Price >= above);
+            }
+
+            if (below != null)
+            {
+                products = products.Where(p => p.Price <= below);
             }
 
             ViewBag.Products =  products.ToList();

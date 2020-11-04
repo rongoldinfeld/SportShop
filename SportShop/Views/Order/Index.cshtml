@@ -6,6 +6,31 @@
 
 @using System.Linq;
 <h1 class="display-4">Our Products</h1>
+<section id="filters">
+    @using (Html.BeginForm())
+    {
+        <span>
+            <label for="name" class="control-label">Product name</label>
+            @Html.TextBox("name", null, new { @class = "form-control" })
+
+        </span>
+        <span>
+            <label for="description" class="control-label">Description</label>
+            @Html.TextBox("description", null, new { @class = "form-control" })
+        </span>
+        <div id="price-range">
+            <span>
+                <label for="above" class="control-label">price</label>
+                from @Html.TextBox("above", null, new { @class = "form-control", @type = "number", @min = "0" })
+                to @Html.TextBox("below", null, new { @class = "form-control", @type = "number", @min = "0" })
+            </span>
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+            <i class="fa fa-search"></i>
+        </button>
+    }
+</section>
+<hr />
 <div class="container catalog">
     <div class="row">
         @foreach (var product in ViewBag.Products)
