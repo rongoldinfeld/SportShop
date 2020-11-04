@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SportShop.Data;
 using SportShop.Models;
 
 namespace SportShop.Controllers
