@@ -33,10 +33,16 @@
 <hr />
 <div class="container catalog">
     <div class="row">
+
         @foreach (var product in ViewBag.Products)
         {
-            <div class="col-4">
-                <div class="card mb-4" style="width: 18rem;">
+           
+            <div class="col-4" >
+                <div class="@(product.Id == ViewBag.RecProduct? "card recommanded mb-4" : "card mb-4")" style="width: 18rem;">
+                        @if (product.Id == ViewBag.RecProduct)
+                        {
+                            <h6 class="recommended-title"> Recommended product</h6>
+                        }
                     <img class="card-img-top" src=@($"~/images/{product.ImageName}") alt="@product.Name" asp-append-version="true">
                     <div class="card-body">
                         <h5 class="card-title">@product.Name</h5>

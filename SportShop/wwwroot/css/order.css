@@ -6,6 +6,15 @@
     color: darkred;
     margin: 5px;
 }
+.recommended-title {
+    text-align: center;
+    color: orange;
+    font-weight: bold;
+}
+
+.recommanded {
+    border: 6px solid orange;
+}
 
 .catalog #shopping-cart {
     position: fixed;
