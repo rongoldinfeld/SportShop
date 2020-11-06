@@ -13,8 +13,9 @@
     align-items: center;
 }
 
-
-.footer { color: white }
+.footer {
+    color: white
+}
 
 .invalid-login { color: red; }
 

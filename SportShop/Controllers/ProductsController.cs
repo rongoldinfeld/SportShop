@@ -8,12 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.IO;
 using System.Reflection.Metadata;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace SportShop.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly SportShopContext _context = new SportShopContext();
+        private IHostEnvironment Environment;
+
+        public ProductsController(IHostEnvironment _enviorment)
+        {
+            this.Environment = _enviorment;
+        }
 
         // GET: Products
         public ActionResult Index(string? name, string? description, int? above, int? below)
@@ -80,11 +89,26 @@ namespace SportShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Description,Price,VideoUrl")]
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,VideoUrl")]
             Product product, bool isFacebookShare = false)
         {
             if (ModelState.IsValid)
             {
+
+                // Generate random file locally
+                var image = Request.Form.Files[0];
+                if (image.Length > 0)
+                {
+                    var ImageExtension = image.FileName.Split('.')[1];
+                    var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
+
+                    product.ImageName = ImageName;
+                    var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images", product.ImageName);
+                    using (var stream = System.IO.File.Create(imagePath))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+                }
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 PostProductOnFacebook(product);
@@ -134,7 +158,7 @@ namespace SportShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Description,Price,VideoUrl")]
+        async public Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,VideoUrl,ImageName")]
             Product product)
         {
             if (id != product.Id)
@@ -144,6 +168,28 @@ namespace SportShop.Controllers
 
             if (ModelState.IsValid)
             {
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    var image = Request.Form.Files[0];
+
+
+
+                    // Generate random file locally
+                    if (image.Length > 0)
+                    {
+                        var ImageExtension = image.FileName.Split('.')[1];
+                        var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
+
+                        product.ImageName = ImageName;
+                        var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images", product.ImageName);
+                        using (var stream = System.IO.File.Create(imagePath))
+                        {
+                            await image.CopyToAsync(stream);
+                        }
+                    }
+
+                }
                 try
                 {
                     _context.Products.AddOrUpdate(product);
