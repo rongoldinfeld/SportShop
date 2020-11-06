@@ -167,7 +167,7 @@ namespace SportShop.Data
                     new Order
                     {
                         Id = 3,
-                        CustomerId = 2,
+                        CustomerId = 1,
                         CreationDate = new DateTime(2018, 4, 2)
                     },
                     new Order

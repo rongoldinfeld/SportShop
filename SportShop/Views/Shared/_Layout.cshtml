@@ -43,6 +43,13 @@
                         <a class="nav-link" asp-controller="Statistics" asp-action="Index">Statistics</a>
                     </li>
                 }
+
+                @if (Context.Session.GetString("Admin") == null && Context.Session.GetInt32("User") != null)
+                {
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-controller="Orders" asp-action="Index">My Orders</a>
+                    </li>
+                }
             </ul>
             <div id="weather-container">
                 <spin class="nav-link" id="current-weather"></spin>
@@ -55,7 +62,7 @@
             </form>
 
             <ul class="navbar-nav">
-                @if (Context.Session.GetString("User") == null && Context.Session.GetString("Admin") == null)
+                @if (Context.Session.GetInt32("User") == null && Context.Session.GetString("Admin") == null)
                 {
                     <li class="nav-item active">
                         <a class="nav-link" asp-controller="Login" asp-action="Index">Login</a>

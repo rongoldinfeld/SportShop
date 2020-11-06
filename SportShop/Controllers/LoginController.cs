@@ -45,7 +45,7 @@ namespace SportShop.Controllers
                 }
                 else
                 {
-                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+                    HttpContext.Session.SetInt32("User", user.Id);
                 }
             }
 
