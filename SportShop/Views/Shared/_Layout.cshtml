@@ -48,7 +48,7 @@
                 @if (Context.Session.GetString("Admin") == null && Context.Session.GetInt32("User") != null)
                 {
                     <li class="nav-item active">
-                        <a class="nav-link" asp-controller="Orders" asp-action="Index">My Orders</a>
+                        <a class="nav-link" asp-controller="OrdersHistory" asp-action="Index">My Orders</a>
                     </li>
                 }
             </ul>

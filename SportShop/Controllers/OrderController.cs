@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using SportShop.Data;
@@ -68,9 +67,9 @@ namespace SportShop.Controllers
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Order/Create
         [HttpPost]
-        public IActionResult Create([Bind("OrderProducts")] Order order)
+        public IActionResult Create([Bind("OrderProducts, Sum")] Order order)
         {
             if (ModelState.IsValid)
             {

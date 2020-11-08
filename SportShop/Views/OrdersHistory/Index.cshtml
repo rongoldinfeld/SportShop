@@ -9,18 +9,17 @@
 <section id="filters">
     @using (Html.BeginForm())
     {
-        <span>
-            <label for="name" class="control-label">Product name</label>
-            @Html.TextBox("name", null, new {@class = "form-control"})
+        <div>
+            <span>
+                <label for="above" class="control-label"><b>Date</b></label>
+                from @Html.TextBox("start", DateTime.Now, new {@class = "form-control", @type = "datetime-local"})
+                to @Html.TextBox("end", DateTime.Now, new {@class = "form-control", @type = "datetime-local" })
+            </span>
+        </div>
 
-        </span>
-        <span>
-            <label for="description" class="control-label">Description</label>
-            @Html.TextBox("description", null, new {@class = "form-control"})
-        </span>
         <div id="price-range">
             <span>
-                <label for="above" class="control-label">price</label>
+                <label for="above" class="control-label"><b>Price</b></label>
                 from @Html.TextBox("above", null, new {@class = "form-control", @type = "number", @min="0"})
                 to @Html.TextBox("below", null, new {@class = "form-control", @type = "number", @min = "0" })
             </span>
@@ -58,7 +57,7 @@
                 @Html.DisplayFor(model => item.Sum)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>

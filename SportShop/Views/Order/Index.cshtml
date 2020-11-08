@@ -110,6 +110,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript">
     var order = [];
+    var totalPrice = 0;
 
     const getOrderProducts = () => {
         const productsInOrder = [];
@@ -139,6 +140,7 @@
     $("#shopping-cart").click(function () {
         order = getOrderProducts();
         var products = [];
+        
 
         jQuery.ajax({
             type: "GET",
@@ -150,7 +152,7 @@
             },
             success: response => {
                 products = response;
-                var totalPrice = 0;
+                
 
                 const productsTable = $("#shopping-cart-products");
                 productsTable.empty();
@@ -190,7 +192,8 @@
             type: 'POST',
             dataType: 'json',
             data: {
-                OrderProducts: order
+                OrderProducts: order,
+                Sum: totalPrice
             },
             success: response => {
                 onSaveSuccess();

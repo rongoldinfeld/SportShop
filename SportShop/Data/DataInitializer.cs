@@ -12,8 +12,8 @@ namespace SportShop.Data
         {
             InitialzieProducts(context);
             InitialzieCustomers(context);
-            InitialzieOrders(context);
-            InitialzieOrderProducts(context);
+            // InitialzieOrders(context);
+            // InitialzieOrderProducts(context);
             InitialzieStores(context);
         }
 
@@ -156,7 +156,7 @@ namespace SportShop.Data
                     {
                         Id = 1,
                         CustomerId = 2,
-                        CreationDate = new DateTime(2018, 1, 1)
+                        CreationDate = new DateTime(2018, 1, 1),
                     },
                     new Order
                     {
