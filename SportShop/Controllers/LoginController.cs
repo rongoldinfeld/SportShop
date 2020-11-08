@@ -52,7 +52,7 @@ namespace SportShop.Controllers
             }
 
 
-            return Redirect("/Home/");
+            return Redirect("/Order/");
         }
     }
 }
