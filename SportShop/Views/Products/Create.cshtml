@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control" min="0" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,6 +35,7 @@
             <div class="form-group">
                 <label asp-for="ImageName" class="control-label"></label>
                 <input asp-for="ImageName" type="file" Class="form-control" />
+                <span asp-validation-for="ImageName" class="text-danger"></span>
             </div>
 
             <div class="form-group">

@@ -6,8 +6,8 @@ namespace SportShop.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        [Required] public string Name { get; set; }
+        [Required] public double Lat { get; set; }
+        [Required] public double Lng { get; set; }
     }
 }
