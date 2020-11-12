@@ -3,17 +3,15 @@ using System.Data.Entity.Migrations;
 using SportShop.Models;
 using SportShop.Data;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.IO;
-using System.Reflection.Metadata;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
 namespace SportShop.Controllers
 {
+    [SessionCheck]
     public class ProductsController : Controller
     {
         private readonly SportShopContext _context = new SportShopContext();
@@ -27,38 +25,31 @@ namespace SportShop.Controllers
         // GET: Products
         public ActionResult Index(string? name, string? description, int? above, int? below)
         {
-            if (HttpContext.Session.GetString("Admin") != null)
+            var products = from m in _context.Products select m;
+
+            if (!String.IsNullOrEmpty(name))
             {
-                var products = from m in _context.Products select m;
-
-                if (!String.IsNullOrEmpty(name))
-                {
-                    products = products.Where(p => p.Name.Contains(name));
-                }
-
-                if (!String.IsNullOrEmpty(description))
-                {
-                    products = products.Where(p => p.Description.Contains(description));
-                }
-
-                if (above != null)
-                {
-                    products = products.Where(p => p.Price >= above);
-                }
-
-                if (below != null)
-                {
-                    products = products.Where(p => p.Price <= below);
-                }
-
-                return View(products.ToList());
+                products = products.Where(p => p.Name.Contains(name));
             }
-            else
+
+            if (!String.IsNullOrEmpty(description))
             {
-                TempData["AdminErrorMessage"] = "Sorry, this page is for admins only. Log in now!";
-                return Redirect("/Login");
+                products = products.Where(p => p.Description.Contains(description));
             }
+
+            if (above != null)
+            {
+                products = products.Where(p => p.Price >= above);
+            }
+
+            if (below != null)
+            {
+                products = products.Where(p => p.Price <= below);
+            }
+
+            return View(products.ToList());
         }
+
 
         // GET: Products/Details/5
         public IActionResult Details(int? id)
@@ -94,7 +85,6 @@ namespace SportShop.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 // Generate random file locally
                 var image = Request.Form.Files[0];
                 if (image.Length > 0)
@@ -103,12 +93,14 @@ namespace SportShop.Controllers
                     var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
 
                     product.ImageName = ImageName;
-                    var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images", product.ImageName);
+                    var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images",
+                        product.ImageName);
                     using (var stream = System.IO.File.Create(imagePath))
                     {
                         await image.CopyToAsync(stream);
                     }
                 }
+
                 _context.Products.Add(product);
                 _context.SaveChanges();
                 PostProductOnFacebook(product);
@@ -122,17 +114,20 @@ namespace SportShop.Controllers
         {
             //Data parameter Example
             string data = "";
-            string message = $"A new product:  \"{product.Name}\" is now available in our stores for only {product.Price} !!! \n SHOP NOW at sport shop the best prices in the whole universe.";
-            string url = $"https://graph.facebook.com/111543207406214/feed?message={message}&access_token=EAAL1cBr10TQBAAmOEAryA5XmEcmC9Vg5foA8lvJBf3QAlytz00rRpKgx7ZBhpvaTgJZACziMNTAKF5mx7ZAGh0XG7DIky2uhA6uCF4ZA2goXvhkqYEkGvUot6E0rZBpUXPy1eUyAlqpwxpIqTSw8zTb6ih0WmA6m3V1x9wutZASwZDZD";
+
+            string message =
+                $"A new product:  \"{product.Name}\" is now available in our stores for only {product.Price} !!! \n SHOP NOW at sport shop the best prices in the whole universe.";
+
+            string url =
+                $"https://graph.facebook.com/111543207406214/feed?message={message}&access_token=EAAL1cBr10TQBAAmOEAryA5XmEcmC9Vg5foA8lvJBf3QAlytz00rRpKgx7ZBhpvaTgJZACziMNTAKF5mx7ZAGh0XG7DIky2uhA6uCF4ZA2goXvhkqYEkGvUot6E0rZBpUXPy1eUyAlqpwxpIqTSw8zTb6ih0WmA6m3V1x9wutZASwZDZD";
+
             WebRequest httpRequest = WebRequest.Create(url);
             httpRequest.Method = "POST";
             httpRequest.ContentType = "application/x-www-form-urlencoded";
             httpRequest.ContentLength = data.Length;
-
             var streamWriter = new StreamWriter(httpRequest.GetRequestStream());
             streamWriter.Write(data);
             streamWriter.Close();
-
             return httpRequest.GetResponse();
         }
 
@@ -168,11 +163,9 @@ namespace SportShop.Controllers
 
             if (ModelState.IsValid)
             {
-
                 if (Request.Form.Files.Count > 0)
                 {
                     var image = Request.Form.Files[0];
-
 
 
                     // Generate random file locally
@@ -182,14 +175,15 @@ namespace SportShop.Controllers
                         var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
 
                         product.ImageName = ImageName;
-                        var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images", product.ImageName);
+                        var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images",
+                            product.ImageName);
                         using (var stream = System.IO.File.Create(imagePath))
                         {
                             await image.CopyToAsync(stream);
                         }
                     }
-
                 }
+
                 try
                 {
                     _context.Products.AddOrUpdate(product);

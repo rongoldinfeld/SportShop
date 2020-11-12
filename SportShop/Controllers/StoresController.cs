@@ -14,23 +14,17 @@ namespace SportShop.Controllers
     public class StoresController : Controller
     {
         SportShopContext _context = new SportShopContext();
+
         async public Task<IActionResult> Index()
         {
             List<Store> stores = await _context.Stores.ToListAsync();
             return View(stores);
         }
 
+        [SessionCheck]
         async public Task<IActionResult> Manage()
         {
-            if (HttpContext.Session.GetString("Admin") != null)
-            {
-                return View(await _context.Stores.ToListAsync());
-            }
-            else
-            {
-                TempData["AdminErrorMessage"] = "Sorry, this page is for admins only. Log in now!";
-                return Redirect("/Login");
-            }
+            return View(await _context.Stores.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -51,6 +45,7 @@ namespace SportShop.Controllers
             return View(product);
         }
 
+        [SessionCheck]
         // GET: Stores/Create
         public IActionResult Create()
         {
@@ -60,10 +55,10 @@ namespace SportShop.Controllers
         // POST: Stores/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [SessionCheck]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Lat,Lng")]
-            Store store)
+        public IActionResult Create([Bind("Id,Name,Lat,Lng")] Store store)
         {
             if (ModelState.IsValid)
             {
@@ -76,6 +71,7 @@ namespace SportShop.Controllers
         }
 
         // GET: Products/Edit/5
+        [SessionCheck]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -97,8 +93,8 @@ namespace SportShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Lat,Lng")]
-            Store store)
+        [SessionCheck]
+        public IActionResult Edit(int id, [Bind("Id,Name,Lat,Lng")] Store store)
         {
             if (id != store.Id)
             {
@@ -131,6 +127,7 @@ namespace SportShop.Controllers
         }
 
         // GET: Products/Delete/5
+        [SessionCheck]
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -158,7 +155,6 @@ namespace SportShop.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
 
         private bool StoreExists(int id)
         {

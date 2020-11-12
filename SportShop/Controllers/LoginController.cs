@@ -17,6 +17,11 @@ namespace SportShop.Controllers
                 ViewBag.Message = TempData["AdminErrorMessage"] as string;
             }
 
+            if (HttpContext.Session.GetString("Admin") != null || HttpContext.Session.GetString("User") != null)
+            {
+                return Logout();
+            }
+
             return View();
         }
 

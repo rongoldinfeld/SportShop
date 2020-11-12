@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace SportShop.Controllers
 {
+    [SessionCheck]
     public class CustomersController : Controller
     {
         private readonly SportShopContext _context = new SportShopContext();
@@ -15,35 +16,27 @@ namespace SportShop.Controllers
         // GET: Customers
         public IActionResult Index(string searchString, string userName, bool? isAdmin)
         {
-            if (HttpContext.Session.GetString("Admin") != null)
+            var customers = from s in _context.Customers select s;
+
+
+            if (!String.IsNullOrEmpty(searchString))
             {
-                var customers = from s in _context.Customers select s;
-
-
-                if (!String.IsNullOrEmpty(searchString))
-                {
-                    customers = customers.Where(s => s.LastName.Contains(searchString)
-                                                     || s.FirstName.Contains(searchString));
-                }
-
-                if (isAdmin != null)
-                {
-                    customers = customers.Where(c => c.IsAdmin == isAdmin);
-                }
-
-                if (!String.IsNullOrEmpty(userName))
-                {
-                    customers = customers.Where(c => c.UserName.Contains(userName));
-                }
-
-
-                return View(customers.ToList());
+                customers = customers.Where(s => s.LastName.Contains(searchString)
+                                                 || s.FirstName.Contains(searchString));
             }
-            else
+
+            if (isAdmin != null)
             {
-                TempData["AdminErrorMessage"] = "Sorry, this page is for admins only. Log in now!";
-                return Redirect("/Login");
+                customers = customers.Where(c => c.IsAdmin == isAdmin);
             }
+
+            if (!String.IsNullOrEmpty(userName))
+            {
+                customers = customers.Where(c => c.UserName.Contains(userName));
+            }
+
+
+            return View(customers.ToList());
         }
 
         // GET: Customers/Details/5

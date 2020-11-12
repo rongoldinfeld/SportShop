@@ -6,21 +6,14 @@ using Newtonsoft.Json;
 
 namespace SportShop.Controllers
 {
+    [SessionCheck]
     public class StatisticsController : Controller
     {
         SportShopContext context = new SportShopContext();
 
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("Admin") != null)
-            {
-                return View();
-            }
-            else
-            {
-                TempData["AdminErrorMessage"] = "Sorry, this page is for admins only. Log in now!";
-                return Redirect("/Login");
-            }
+            return View();
         }
 
         // GET: Statistics/SumPurchasesPerMonth
