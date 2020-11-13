@@ -41,7 +41,7 @@ namespace SportShop.Controllers
             }
             ViewBag.RecProduct = -1;
             List<Product> productsList=  products.ToList();
-            if (HttpContext.Session.GetString("UserId") != null)
+            if (HttpContext.Session.GetInt32("User") != null)
             {
 
                 int? recProductid = recommendedProduct();
@@ -73,7 +73,7 @@ namespace SportShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                order.CustomerId = int.Parse(HttpContext.Session.GetString("UserId"));
+                order.CustomerId = (int) HttpContext.Session.GetInt32("User");
                 order.CreationDate = DateTime.Now;
                 _context.Orders.Add(order);
                 _context.SaveChanges();
@@ -102,9 +102,9 @@ namespace SportShop.Controllers
 
         public int? recommendedProduct()
         {
-            if (HttpContext.Session.GetString("UserId") != null)
+            if (HttpContext.Session.GetInt32("User") != null)
             {
-                int CustomerId = int.Parse(HttpContext.Session.GetString("UserId"));
+                int CustomerId = (int) HttpContext.Session.GetInt32("User");
                 var customer = _context.Customers.SingleOrDefault(customer => customer.Id == CustomerId);
                 int customerYearsOld = Convert.ToInt32(((DateTime.Now - customer.BirthDate).TotalDays / 365));
                 int YEAR_RADIUS = 5;

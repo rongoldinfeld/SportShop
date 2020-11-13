@@ -58,7 +58,7 @@
             </div>
         }
     </div>
-    @if (Context.Session.GetString("User") != null || Context.Session.GetString("Admin") != null)
+    @if (Context.Session.GetInt32("User") != null)
     {
         <button id="shopping-cart" type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#shoppingCartModal">
             <i class="fas fa-shopping-cart fa-1x"></i>
@@ -183,11 +183,11 @@
 
     const setPrice = price => {
         totalPrice = price;
-        $("#total-price").text("Price: " + price);
+        $("#total-price").text(`Total Price: ${price} NIS`);
     }
 
     const onSaveSuccess = () => {
-        $("#save-message").append("<b>Order Sent!</b>");
+        $("#save-message").append("<b>Order Sent! We'll send you a mail with our payment details.</b>");
         setTimeout(() => {
                 $("#save-message").empty();
                 $("#close-cart-btn").click();
@@ -195,7 +195,7 @@
                     element.value = 0;
                 });
             },
-            500);
+            2000);
     }
 
     $("#save-order").click(function() {

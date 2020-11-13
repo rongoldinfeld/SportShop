@@ -17,7 +17,7 @@ namespace SportShop.Controllers
                 ViewBag.Message = TempData["AdminErrorMessage"] as string;
             }
 
-            if (HttpContext.Session.GetString("Admin") != null || HttpContext.Session.GetString("User") != null)
+            if (HttpContext.Session.GetString("Admin") != null || HttpContext.Session.GetInt32("User") != null)
             {
                 return Logout();
             }
@@ -44,7 +44,6 @@ namespace SportShop.Controllers
             else
             {
                 HttpContext.Session.SetString("UserFullName", user.FirstName + " " + user.LastName);
-                HttpContext.Session.SetString("UserId", user.Id.ToString());
 
                 if (user.IsAdmin)
                 {

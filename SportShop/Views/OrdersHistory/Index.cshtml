@@ -54,10 +54,13 @@
                 @Html.DisplayFor(model => item.CreationDate)
             </td>
             <td>
-                @Html.DisplayFor(model => item.Sum)
+                @Html.DisplayFor(model => item.Sum) NIS
             </td>
             <td>
-                @* <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
+                @if (Context.Session.GetString("Admin") != null)
+                {
+                    <span><a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | </span>
+                }
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>

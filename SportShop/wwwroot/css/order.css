@@ -23,3 +23,7 @@
     bottom: 10px;
     z-index: 100;
 }
+
+#invalid-order {
+    color: red;
+}

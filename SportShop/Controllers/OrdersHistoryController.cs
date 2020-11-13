@@ -16,11 +16,14 @@ namespace SportShop.Controllers
         // GET: Orders
         public ActionResult Index(DateTime? start, DateTime? end, int? above, int? below)
         {
-            if (HttpContext.Session.GetInt32("User") != null)
-            {
-                int customerId = (int) HttpContext.Session.GetInt32("User");
+            var isAdmin = HttpContext.Session.GetString("Admin");
+            var user = HttpContext.Session.GetInt32("User");
 
-                var orders = this.GetProductWithDetails().Where(order => order.CustomerId == customerId);
+            if (user != null || isAdmin != null)
+            {
+                var customerId = HttpContext.Session.GetInt32("User");
+
+                var orders = isAdmin != null ? GetProductWithDetails() : GetProductWithDetails().Where(order => order.CustomerId == customerId);
 
                 if (start != null)
                 {
@@ -60,7 +63,7 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var order = this.GetProductWithDetails()
+            var order = GetProductWithDetails()
                 .FirstOrDefault(m => m.Id == id);
             if (order == null)
             {
@@ -100,6 +103,7 @@ namespace SportShop.Controllers
         }
 
         // GET: Products/Edit/5
+        [SessionCheck]
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -107,7 +111,7 @@ namespace SportShop.Controllers
                 return NotFound();
             }
 
-            var order = this.GetProductWithDetails().FirstOrDefault(o => o.Id == id);
+            var order = GetProductWithDetails().FirstOrDefault(o => o.Id == id);
             if (order == null)
             {
                 return NotFound();
@@ -123,30 +127,23 @@ namespace SportShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                var orderToUpdate = _context.Orders.SingleOrDefault(x => x.Id == order.Id);
+
+                if(orderToUpdate == null)
                 {
-                    _context.Orders.AddOrUpdate(order);
-                    _context.SaveChanges();
+                    return NotFound();
                 }
-                catch (Exception e)
-                {
-                    if (!this.OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
+
+                orderToUpdate.Sum = order.Sum;
+                
+                var orderProducts = order.OrderProducts.Where(x => x.Quantity > 0).ToList();
+
+                _context.OrderProducts.AddOrUpdate(orderProducts.ToArray());
+                _context.Orders.AddOrUpdate(orderToUpdate);
+                _context.SaveChanges();
             }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Orders.Any(e => e.Id == id);
         }
 
         private IQueryable<Order> GetProductWithDetails()

@@ -12,8 +12,8 @@ namespace SportShop.Data
         {
             InitialzieProducts(context);
             InitialzieCustomers(context);
-            // InitialzieOrders(context);
-            // InitialzieOrderProducts(context);
+            InitialzieOrders(context);
+            InitialzieOrderProducts(context);
             InitialzieStores(context);
         }
 
@@ -134,6 +134,19 @@ namespace SportShop.Data
                         City = "rishon",
                         ZipCode = 123123,
                         IsAdmin = false
+                    },
+                    new Customer
+                    {
+                        Id = 3,
+                        FirstName = "Sapir",
+                        LastName = "Muallem",
+                        BirthDate = new DateTime(1998, 3, 6),
+                        UserName = "sap",
+                        Password = "1234",
+                        Address = "habroshim",
+                        City = "ramot hashavi,",
+                        ZipCode = 459300,
+                        IsAdmin = false
                     }
                 }
             );
@@ -157,24 +170,28 @@ namespace SportShop.Data
                         Id = 1,
                         CustomerId = 2,
                         CreationDate = new DateTime(2018, 1, 1),
+                        Sum = 100
                     },
                     new Order
                     {
                         Id = 2,
                         CustomerId = 2,
-                        CreationDate = new DateTime(2018, 2, 1)
+                        CreationDate = new DateTime(2018, 2, 1),
+                        Sum = 200
                     },
                     new Order
                     {
                         Id = 3,
-                        CustomerId = 1,
-                        CreationDate = new DateTime(2018, 4, 2)
+                        CustomerId = 3,
+                        CreationDate = new DateTime(2018, 4, 2),
+                        Sum = 300
                     },
                     new Order
                     {
                         Id = 4,
                         CustomerId = 2,
-                        CreationDate = new DateTime(2020, 10, 23)
+                        CreationDate = new DateTime(2020, 10, 23),
+                        Sum = 400
                     }
                 }
             );
@@ -196,7 +213,7 @@ namespace SportShop.Data
                     {
                         OrderId = 1,
                         ProductId = 1,
-                        Quantity = 5
+                        Quantity = 5,
                     },
                     new OrderProduct
                     {
@@ -208,13 +225,19 @@ namespace SportShop.Data
                     {
                         OrderId = 4,
                         ProductId = 4,
-                        Quantity = 6
+                        Quantity = 2
                     },
                     new OrderProduct
                     {
                         OrderId = 4,
                         ProductId = 1,
-                        Quantity = 10
+                        Quantity = 5
+                    },
+                    new OrderProduct
+                    {
+                        OrderId = 3,
+                        ProductId = 1,
+                        Quantity = 5
                     },
                 }
             );
