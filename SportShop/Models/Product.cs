@@ -12,6 +12,6 @@ namespace SportShop.Models
         public decimal Price { get; set; }
 
         [Required] public string VideoUrl { get; set; }
-        [Required] public string ImageName { get; set; }
+        public string ImageName { get; set; }
     }
 }
