@@ -68,7 +68,7 @@ namespace SportShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(
-            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Phone,Address,City,ZipCode,IsAdmin")]
             Customer customer)
         {
             if (ModelState.IsValid)
@@ -104,7 +104,7 @@ namespace SportShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id,
-            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Phone,Address,City,ZipCode,IsAdmin")]
             Customer customer)
         {
             if (id != customer.Id)
@@ -181,7 +181,7 @@ namespace SportShop.Controllers
 
         // GET: Customers/Filter
         public IActionResult Filter(
-            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode,IsAdmin")]
+            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Phone,Address,City,ZipCode,IsAdmin")]
             Customer customer)
         {
             // var customers = _context.Customers;

@@ -23,7 +23,7 @@ namespace SportShop.Controllers
         // POST: Register/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index([Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Address,City,ZipCode")] Customer customer)
+        public ActionResult Index([Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Phone,Address,City,ZipCode")] Customer customer)
         {
             if (ModelState.IsValid)
             {
