@@ -148,7 +148,10 @@ namespace SportShop.Controllers
 
         private IQueryable<Order> GetProductWithDetails()
         {
-            return _context.Orders.Include(order => order.OrderProducts).AsQueryable();
+            return _context.Orders
+                .Include(order => order.OrderProducts)
+                .Include(order => order.Customer)
+                .AsQueryable();
         }
     }
 }

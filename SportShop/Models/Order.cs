@@ -12,7 +12,7 @@ namespace SportShop.Models
         [ForeignKey("Customer")] public int CustomerId { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
 
         public int Sum { get; set; }
 
