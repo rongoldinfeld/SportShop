@@ -12,8 +12,8 @@
         <div>
             <span>
                 <label for="above" class="control-label"><b>Date</b></label>
-                from @Html.TextBox("start", DateTime.Now, new {@class = "form-control", @type = "datetime-local"})
-                to @Html.TextBox("end", DateTime.Now, new {@class = "form-control", @type = "datetime-local" })
+                from @Html.TextBox("start", DateTime.Now, new {@class = "form-control", @type = "date"})
+                to @Html.TextBox("end", DateTime.Now, new {@class = "form-control", @type = "date" })
             </span>
         </div>
 
@@ -51,7 +51,10 @@
                 @Html.DisplayFor(model => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(model => item.CreationDate)
+                @{
+                    string shortDate = item.CreationDate.ToString("dd-MM-yyyy");
+                }
+                @Html.DisplayFor(model => shortDate)
             </td>
             <td>
                 @Html.DisplayFor(model => item.Sum) NIS

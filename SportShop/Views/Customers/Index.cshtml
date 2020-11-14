@@ -4,6 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
+<head>
+    <style>
+        table {
+            width: max-content !important;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
 <h2>Manage your customers!</h2>
 
 <p>
@@ -44,12 +53,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Password)

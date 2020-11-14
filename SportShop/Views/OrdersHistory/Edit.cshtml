@@ -8,20 +8,20 @@
 <h2>Edit</h2>
 
 <h4>Order</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" onsubmit="return onSubmit()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" disabled />
+                <input asp-for="Id" class="form-control" disabled/>
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Sum" class="control-label"></label>
-                <input asp-for="Sum" type="number" class="form-control" min="0" />
+                <input asp-for="Sum" type="number" class="form-control" min="0"/>
                 <span asp-validation-for="Sum" class="text-danger"></span>
             </div>
 
@@ -32,12 +32,14 @@
                     @Html.HiddenFor(m => m.OrderProducts[i].ProductId)
                     <div class="form-group">
                         <span>Product Id: @Model.OrderProducts.ElementAt(i).ProductId</span>
-                        <br />
+                        <br/>
                         <span>Product Name: @Model.OrderProducts.ElementAt(i).Product.Name</span>
+                        <br/>
+                        <span>Product Price: @Model.OrderProducts.ElementAt(i).Product.Price</span>
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(m => m.OrderProducts[i].Quantity)
-                        @Html.TextBoxFor(m => m.OrderProducts[i].Quantity, new { @class = "form-control quantity", @type = "number", @min = "0", @max = "5" })
+                        @Html.TextBoxFor(m => m.OrderProducts[i].Quantity, new {@class = "form-control quantity", @type = "number", @min = "0", @max = "5", @onblur = "updateSum(" + i + "," + @Model.OrderProducts.ElementAt(i).Product.Price + ")"})
                         @Html.ValidationMessageFor(m => m.OrderProducts[i].Quantity)
                     </div>
                 </fieldset>
@@ -46,7 +48,7 @@
                 <span id="invalid-order"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </form>
     </div>
@@ -60,7 +62,7 @@
     const onSubmit = () => {
         let sum = 0;
 
-        $(".quantity").each(function (index, element) {
+        $(".quantity").each(function(index, element) {
             sum += parseInt(element.value);
         })
 
@@ -71,8 +73,24 @@
         $("#invalid-order").text("Order must containe at least one product!");
         return false;
     };
+
+    $('.quantity').on('focusin',
+        function hello() {
+            $(this).data('previousValue', $(this).val());
+        });
+
+    var sumElement = document.getElementById("Sum");
+
+    const updateSum = (item, itemPrice) => {
+        const quantityInput = $(`#OrderProducts_${ item }__Quantity`);
+        const oldQuantity = parseInt(quantityInput.data('previousValue'));
+        const newQuantity = parseInt(quantityInput.val());
+        itemPrice = parseInt(itemPrice);
+        const delta = (newQuantity - oldQuantity) * itemPrice;
+        sumElement.value = parseInt(sumElement.value) + delta;
+    }
 </script>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-} 
+}
