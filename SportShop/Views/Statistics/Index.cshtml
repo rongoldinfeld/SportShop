@@ -19,6 +19,12 @@
             display: none;
         }
 
+        td, th {
+            text-align: right;
+            padding: 10px;
+            margin: 0 auto;
+        }
+
         #graphs-container {
             display: flex;
             justify-content: space-around;
@@ -191,7 +197,7 @@
                     nameCell.innerText = productDescription.name;
                     tableRow.append(idCell, nameCell);
                     descriptionContainer.append(tableRow);
-                    });
+                });
 
                 descriptionContainer.style.display = 'grid';
             }
