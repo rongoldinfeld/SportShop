@@ -129,7 +129,7 @@
                 productsInOrder.push({
                     productId,
                     quantity
-                })
+                });
             }
         });
 
@@ -139,7 +139,6 @@
     $("#shopping-cart").click(function() {
         order = getOrderProducts();
         var products = [];
-
 
         jQuery.ajax({
             type: "GET",

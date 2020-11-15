@@ -177,21 +177,5 @@ namespace SportShop.Controllers
         {
             return _context.Customers.Any(e => e.Id == id);
         }
-
-
-        // GET: Customers/Filter
-        public IActionResult Filter(
-            [Bind("Id,FirstName,LastName,BirthDate,UserName,Password,Phone,Address,City,ZipCode,IsAdmin")]
-            Customer customer)
-        {
-            // var customers = _context.Customers;
-            //
-            // if (!String.IsNullOrEmpty(firstName))
-            // {
-            //     return View(customers.Where(c => c.FirstName.Contains(firstName)).ToList());
-            // }
-
-            return View(_context.Customers.ToList());
-        }
     }
 }

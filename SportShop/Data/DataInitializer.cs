@@ -17,27 +17,6 @@ namespace SportShop.Data
             InitialzieStores(context);
         }
 
-        public static void CleanUp(SportShopContext context)
-        {
-            context.Customers.RemoveRange(context.Customers.ToList());
-            context.SaveChanges();
-
-            context.Orders.RemoveRange(context.Orders.ToList());
-            context.SaveChanges();
-
-            context.Products.RemoveRange(context.Products.ToList());
-            context.SaveChanges();
-
-            context.OrderProducts.RemoveRange(context.OrderProducts.ToList());
-            context.SaveChanges();
-
-            context.Stores.RemoveRange(context.Stores.ToList());
-            context.SaveChanges();
-
-            context.Database.Delete();
-            context.SaveChanges();
-        }
-
         private static void InitialzieProducts(SportShopContext context)
         {
             // Look for any Customerss.

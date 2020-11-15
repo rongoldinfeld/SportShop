@@ -13,7 +13,7 @@ namespace SportShop.Controllers
     {
         private readonly SportShopContext _context = new SportShopContext();
 
-        // GET: Orders
+        // GET: OrdersHistory
         public ActionResult Index(DateTime? start, DateTime? end, int? above, int? below)
         {
             var isAdmin = HttpContext.Session.GetString("Admin");

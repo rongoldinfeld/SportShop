@@ -90,11 +90,14 @@ namespace SportShop.Controllers
                 if (image.Length > 0)
                 {
                     var ImageExtension = image.FileName.Split('.')[1];
+                    // generate unique name for each uploaded image so it won't collide with other users uploaded images
                     var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
 
                     product.ImageName = ImageName;
                     var imagePath = Path.Combine(this.Environment.ContentRootPath, "wwwroot\\images",
                         product.ImageName);
+
+                    // Creates the images in ImagePath
                     using (var stream = System.IO.File.Create(imagePath))
                     {
                         await image.CopyToAsync(stream);
@@ -103,7 +106,12 @@ namespace SportShop.Controllers
 
                 _context.Products.Add(product);
                 _context.SaveChanges();
-                PostProductOnFacebook(product);
+
+                if (isFacebookShare)
+                {
+                    PostProductOnFacebook(product);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -112,9 +120,6 @@ namespace SportShop.Controllers
 
         public static WebResponse PostProductOnFacebook(Product product)
         {
-            //Data parameter Example
-            string data = "";
-
             string message =
                 $"A new product:  \"{product.Name}\" is now available in our stores for only {product.Price} !!! \n SHOP NOW at sport shop the best prices in the whole universe.";
 
@@ -124,10 +129,6 @@ namespace SportShop.Controllers
             WebRequest httpRequest = WebRequest.Create(url);
             httpRequest.Method = "POST";
             httpRequest.ContentType = "application/x-www-form-urlencoded";
-            httpRequest.ContentLength = data.Length;
-            var streamWriter = new StreamWriter(httpRequest.GetRequestStream());
-            streamWriter.Write(data);
-            streamWriter.Close();
             return httpRequest.GetResponse();
         }
 
@@ -153,6 +154,7 @@ namespace SportShop.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // The image name in the parameters is the OLD image name
         async public Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,VideoUrl,ImageName")]
             Product product)
         {
@@ -163,15 +165,17 @@ namespace SportShop.Controllers
 
             if (ModelState.IsValid)
             {
+                // If user uploaded a new image
                 if (Request.Form.Files.Count > 0)
                 {
+                    // Get the image content
                     var image = Request.Form.Files[0];
 
-
-                    // Generate random file locally
+                    // Check if the image provided is not an empty file
                     if (image.Length > 0)
                     {
                         var ImageExtension = image.FileName.Split('.')[1];
+                        // generate unique name for each uploaded image so it won't collide with other users uploaded images
                         var ImageName = Guid.NewGuid().ToString() + '.' + ImageExtension;
 
                         product.ImageName = ImageName;

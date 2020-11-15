@@ -28,6 +28,7 @@ namespace SportShop.Controllers
         }
 
         // GET: Products/Details/5
+        [SessionCheck]
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -148,6 +149,7 @@ namespace SportShop.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [SessionCheck]
         public IActionResult DeleteConfirmed(int id)
         {
             var store = _context.Stores.Find(id);

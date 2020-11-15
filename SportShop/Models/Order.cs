@@ -20,6 +20,7 @@ namespace SportShop.Models
 
         public Order()
         {
+            // We don't want users with out any orders to have this field equals to null so we initialize it to an empty list
             OrderProducts = new List<OrderProduct>();
         }
     }
