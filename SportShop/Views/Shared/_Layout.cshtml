@@ -115,23 +115,23 @@
         var currentWeather = document.getElementById("current-weather");
         var currentWeatherContainer = document.getElementById("weather-container");
 
-        //    jQuery.ajax(weatherQueryOptions).done(function(response) {
-        //        var temperature = response.main.temp;
-        //        currentWeather.innerText = "טמפרטורה נוכחית: " + temperature + '°';
-        //
-        //        var icon = document.createElement('i');
-        //        if (temperature > 25) {
-        //            icon.setAttribute("class", "fas fa-sun fa-2x");
-        //            icon.style.color = "#ff8100";
-        //        } else if (temperature >= 18 && temperature <= 25) {
-        //            icon.setAttribute("class", "fas fa-cloud fa-2x");
-        //            icon.style.color = "#00a1ff";
-        //        } else if (temperature < 18) {
-        //            icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x");
-        //            icon.style.color = "#2ae1ff";
-        //        }
-        //        currentWeatherContainer.append(icon);
-        //    });
+            jQuery.ajax(weatherQueryOptions).done(function(response) {
+                var temperature = response.main.temp;
+                currentWeather.innerText = "טמפרטורה נוכחית: " + temperature + '°';
+        
+                var icon = document.createElement('i');
+                if (temperature > 25) {
+                    icon.setAttribute("class", "fas fa-sun fa-2x");
+                    icon.style.color = "#ff8100";
+                } else if (temperature >= 18 && temperature <= 25) {
+                    icon.setAttribute("class", "fas fa-cloud fa-2x");
+                    icon.style.color = "#00a1ff";
+                } else if (temperature < 18) {
+                    icon.setAttribute("class", "fas fa-cloud-showers-heavy fa-2x");
+                    icon.style.color = "#2ae1ff";
+                }
+                currentWeatherContainer.append(icon);
+            });
 
     </script>
     <script type="text/javascript">
