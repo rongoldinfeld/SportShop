@@ -52,8 +52,7 @@
                         <a class="btn btn-link product-video" href="@(product.VideoUrl)">
                             <i class="fab fa-youtube fa-2x"></i>
                         </a>
-                        <input id="@product.Id" class="col-2 product-amount form-control" type="number" min="0" max="5" value="0" onkeyup="if (this.value < 0) this.value = 0"
-                               onblur="if (this.value < 0) this.value = 0"/>
+                        <input id="@product.Id" class="col-2 product-amount form-control" type="number" min="0" max="5" value="0" oninput="validity.valid||(value='');" onfocusout=" if (value === NaN || value === '' ) value = 0"/>
                     </footer>
                 </div>
             </div>
@@ -101,7 +100,7 @@
                     <div id="save-message"></div>
                 </div>
                 <div class="modal-footer">
-                    <button id="save-order" type="button" class="btn btn-success">Send Order</button>
+                    <button id="save-order" type="button" [disabled]="true" class="btn btn-success">Send Order</button>
                 </div>
             </div>
         </div>
@@ -137,9 +136,18 @@
         return productsInOrder;
     };
 
+    const setSaveOrderDisabledState = state => document.getElementById("save-order").disabled = state;
+
     $("#shopping-cart").click(function() {
         order = getOrderProducts();
         var products = [];
+
+        if (order.length > 0) {
+            setSaveOrderDisabledState(false);
+        } else {
+            setSaveOrderDisabledState(true);
+        }
+
 
         jQuery.ajax({
             type: "GET",
@@ -188,6 +196,7 @@
 
     const onSaveSuccess = () => {
         $("#save-message").append("<b>Order Sent! We'll call you to take payment details</b>");
+        
         setTimeout(() => {
                 $("#save-message").empty();
                 $("#close-cart-btn").click();
@@ -195,10 +204,11 @@
                     element.value = 0;
                 });
             },
-            2000);
+            1000);
     }
 
-    $("#save-order").click(function() {
+    $("#save-order").click(function () {
+        setSaveOrderDisabledState(true);
         $.ajax({
             url: '/Order/Create',
             type: 'POST',
