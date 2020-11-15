@@ -52,7 +52,8 @@
                         <a class="btn btn-link product-video" href="@(product.VideoUrl)">
                             <i class="fab fa-youtube fa-2x"></i>
                         </a>
-                        <input id="@product.Id" class="col-2 product-amount form-control" type="number" min="0" max="5" value="0"/>
+                        <input id="@product.Id" class="col-2 product-amount form-control" type="number" min="0" max="5" value="0" onkeyup="if (this.value < 0) this.value = 0"
+                               onblur="if (this.value < 0) this.value = 0"/>
                     </footer>
                 </div>
             </div>
